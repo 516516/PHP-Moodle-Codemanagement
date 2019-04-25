@@ -1,0 +1,137 @@
+<XMLDB xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	PATH="mod/codemanagement/db" VERSION="20190314"
+	COMMENT="XMLDB file for Moodle mod/codemanagement"
+	xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
+	<TABLES>
+		<TABLE NAME="codemanagement"
+			COMMENT="Default comment for the table, please edit me">
+			<FIELDS>
+				<FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true"
+					SEQUENCE="true" />
+				<FIELD NAME="course" TYPE="int" LENGTH="11" NOTNULL="true"
+					SEQUENCE="false" COMMENT="课程id" />
+				<FIELD NAME="name" TYPE="text" NOTNULL="true" SEQUENCE="false"
+					COMMENT="###课代码管理" />
+				<FIELD NAME="intro" TYPE="text" NOTNULL="true"
+					SEQUENCE="false" COMMENT="简介" />
+				<FIELD NAME="timecreated" TYPE="int" LENGTH="11"
+					NOTNULL="true" SEQUENCE="false" COMMENT="活动创建时间" />
+				<FIELD NAME="introformat" TYPE="int" LENGTH="3" NOTNULL="true"
+					SEQUENCE="false" COMMENT="是否显示活动简介" />
+			</FIELDS>
+			<KEYS>
+				<KEY NAME="primary" TYPE="primary" FIELDS="id" />
+				<KEY NAME="courseid" TYPE="foreign" FIELDS="course"
+					REFTABLE="course" REFFIELDS="id" COMMENT="课程id" />
+			</KEYS>
+		</TABLE>
+		<TABLE NAME="codemanagement_version" COMMENT="版本表">
+			<FIELDS>
+				<FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true"
+					SEQUENCE="true" />
+				<FIELD NAME="version_user_id" TYPE="int" LENGTH="11" NOTNULL="false"
+					SEQUENCE="false" COMMENT="用户id" />
+				<FIELD NAME="version_descrition" TYPE="text" NOTNULL="true"
+					SEQUENCE="false" COMMENT="版本描述" />
+				<FIELD NAME="version_date" TYPE="int" LENGTH="20"
+					NOTNULL="true" SEQUENCE="false" COMMENT="版本创建日期" />
+				<FIELD NAME="version_code_path" TYPE="text" NOTNULL="true"
+					SEQUENCE="false" COMMENT="版本存储路径" />
+				<FIELD NAME="version_code_name" TYPE="text" NOTNULL="true"
+					SEQUENCE="false" COMMENT="版本中源代码的名称" />
+			</FIELDS>
+			<KEYS>
+				<KEY NAME="primary" TYPE="primary" FIELDS="id" />
+			</KEYS>
+		</TABLE>
+		<TABLE NAME="codemanagement_reponsitory" COMMENT="代码仓库">
+			<FIELDS>
+				<FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true"
+					SEQUENCE="true" />
+				<FIELD NAME="re_codemanagementid" TYPE="int" LENGTH="11"
+					NOTNULL="true" SEQUENCE="false" COMMENT="代码管理id" />
+				<FIELD NAME="re_userid" TYPE="int" LENGTH="11" NOTNULL="false"
+					SEQUENCE="false" COMMENT="用户id" />
+				<FIELD NAME="re_name" TYPE="text" NOTNULL="true"
+					SEQUENCE="false" COMMENT="仓库名称" />
+				<FIELD NAME="re_description" TYPE="text" NOTNULL="true"
+					SEQUENCE="false" COMMENT="仓库描述" />
+				<FIELD NAME="re_date" TYPE="int" LENGTH="11" NOTNULL="true"
+					SEQUENCE="false" COMMENT="仓库创建日期" />
+				<FIELD NAME="re_updatetime" TYPE="int" LENGTH="11"
+					NOTNULL="true" SEQUENCE="false" COMMENT="仓库更新时间即最近一次版本的上传时间" />
+				<FIELD NAME="re_public" TYPE="int" LENGTH="3" NOTNULL="true"
+					SEQUENCE="false" COMMENT="仓库是否公有属性" />
+				<FIELD NAME="re_course_id" TYPE="int" LENGTH="11" NOTNULL="true"
+					SEQUENCE="false" COMMENT="仓库所属课程id" />
+				<FIELD NAME="re_instance_id" TYPE="int" LENGTH="11" NOTNULL="true"
+					SEQUENCE="false" COMMENT="仓库所属代码管理活动实例id" />
+			</FIELDS>
+			<KEYS>
+				<KEY NAME="primary" TYPE="primary" FIELDS="id" />
+				<KEY NAME="user" TYPE="foreign" FIELDS="re_userid"
+					REFTABLE="user" REFFIELDS="id" />
+				<KEY NAME="codemanagementid" TYPE="foreign"
+					FIELDS="re_codemanagementid" REFTABLE="codemanagement"
+					REFFIELDS="id" COMMENT="代码管理活动id" />
+			</KEYS>
+		</TABLE>
+		<TABLE NAME="codemanagement_files" COMMENT="文件表">
+			<FIELDS>
+				<FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true"
+					SEQUENCE="true" />
+				<FIELD NAME="file_name" TYPE="text" NOTNULL="true"
+					SEQUENCE="false" COMMENT="文件名" />
+				<FIELD NAME="file_path" TYPE="text" NOTNULL="true"
+					SEQUENCE="false" COMMENT="文件路径" />
+				<FIELD NAME="file_content" TYPE="text" NOTNULL="true"
+					SEQUENCE="false" COMMENT="文件内容" />
+				<FIELD NAME="file_state" TYPE="int" LENGTH="2" NOTNULL="true"
+					SEQUENCE="false" COMMENT="文件状态" />
+				<FIELD NAME="file_md5" TYPE="text" NOTNULL="true"
+					SEQUENCE="false" COMMENT="文件编码--唯一标识该文件" />
+				<FIELD NAME="file_date" TYPE="int" LENGTH="11" NOTNULL="true"
+					SEQUENCE="false" COMMENT="文件添加时间" />
+			</FIELDS>
+			<KEYS>
+				<KEY NAME="primary" TYPE="primary" FIELDS="id" />
+			</KEYS>
+		</TABLE>
+		<TABLE NAME="codemanagement_file_of_ver" COMMENT="文件版本表">
+			<FIELDS>
+				<FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true"
+					SEQUENCE="true" />
+				<FIELD NAME="version_id" TYPE="int" LENGTH="11"
+					NOTNULL="false" SEQUENCE="false" COMMENT="版本id" />
+				<FIELD NAME="file_id" TYPE="int" LENGTH="11" NOTNULL="false"
+					SEQUENCE="false" COMMENT="文件id" />
+			</FIELDS>
+			<KEYS>
+				<KEY NAME="primary" TYPE="primary" FIELDS="id" />
+				<KEY NAME="versionid" TYPE="foreign" FIELDS="version_id"
+					REFTABLE="codemanagement_version" REFFIELDS="id" COMMENT="代码版本" />
+				<KEY NAME="fileid" TYPE="foreign" FIELDS="file_id"
+					REFTABLE="codemanagement_files" REFFIELDS="id" COMMENT="文件id" />
+			</KEYS>
+		</TABLE>
+		<TABLE NAME="codemanagement_ver_of_rep"
+			COMMENT="仓库---用于管理某位学生在某门课程下提交作业的所有版本">
+			<FIELDS>
+				<FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true"
+					SEQUENCE="true" />
+				<FIELD NAME="version_id" TYPE="int" LENGTH="11"
+					NOTNULL="false" SEQUENCE="false" COMMENT="版本的id号" />
+				<FIELD NAME="reponsitory_id" TYPE="int" LENGTH="11"
+					NOTNULL="false" SEQUENCE="false" COMMENT="仓库id" />
+			</FIELDS>
+			<KEYS>
+				<KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="仓库id" />
+				<KEY NAME="versionid" TYPE="foreign" FIELDS="version_id"
+					REFTABLE="codemanagement_version" REFFIELDS="id" COMMENT="版本id号" />
+				<KEY NAME="respository_id" TYPE="foreign"
+					FIELDS="reponsitory_id" REFTABLE="codemanagement_reponsitory"
+					REFFIELDS="id" COMMENT="仓库id" />
+			</KEYS>
+		</TABLE>
+	</TABLES>
+</XMLDB>
